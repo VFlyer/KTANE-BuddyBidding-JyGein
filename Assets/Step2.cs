@@ -38,7 +38,7 @@ public static class Step2 {
         return Item1Table[Util.mod(Util.SumPosition(Module.creditCard.CreditCardNumberStr, true) - 36, 18)][Util.mod(Util.SumPosition(Module.creditCard.CreditCardNumberStr, false) - 36, 18)];
     }
     static Item Item2(BuddyBidding Module, KMBombInfo Bomb) {
-        return (Item)((Util.DigitalRoot(Module.creditCard.CreditCardNumber) * Item2Table[(int)Module.TodaysBuddy]) % 10);
+        return (Item)((Util.DigitalRoot(Module.PlayerBalance) * Item2Table[(int)Module.TodaysBuddy]) % 10);
     }
     static Item Item3(BuddyBidding Module, KMBombInfo Bomb) {
         List<Item> outputList = Item3Table[Module.creditCard.Company];
