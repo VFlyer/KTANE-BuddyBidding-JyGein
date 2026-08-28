@@ -65,7 +65,7 @@ public class BuddyBidding : MonoBehaviour {
 #pragma warning restore IDE0051
         ModuleName = Module.ModuleDisplayName;
         ModuleId = ModuleIdCounter++;
-        Module.OnActivate += Activate;
+        //Module.OnActivate += Activate;
         TodaysBuddy = (Buddy)Rnd.Range(0, Buddies.Count);
         biddingPad.SetDisplay(Buddies[(int)TodaysBuddy]);
         creditCard.Log += Log;
@@ -87,15 +87,14 @@ public class BuddyBidding : MonoBehaviour {
         Auctions.Add(new Auction { Item = Item.Buddy });
 
     }
-
-    void Activate () 
-    { //Shit that should happen when the bomb arrives (factory)/Lights turn on
-
-    }
 #pragma warning disable IDE0051
     void Start ()
     { //Shit
 #pragma warning restore IDE0051
+        //Log($"Your Credit Card Number: {creditCard.CreditCardNumber}");
+        //Log($"Your Credit Card Value: {creditCard.CVVNumber}");
+        //Log($"Your Credit Card Company: {creditCard.Company}");
+        Log($"Your Buddy's Color: {TodaysBuddy}");
         PlayerBalance = Step1.GenerateBalance(this, Bomb);
         MaxofBotMaxes = PlayerBalance - 30 - PlayerBalance / 100;
         Log($"Your Balance: {PlayerBalance}");
@@ -111,6 +110,7 @@ public class BuddyBidding : MonoBehaviour {
             int count = 0;
             foreach (Item item in ChosenItems)
             {
+                count++;
                 Log($"Item {count}: {item}");
                 int BotNum = Rnd.Range(0, 3);
                 List<ModuleBot> NewBots = new List<ModuleBot>();
@@ -328,6 +328,7 @@ public class BuddyBidding : MonoBehaviour {
             {
                 Log("You lost all of your wanted items!! Goodbye!!");
                 Detonate();
+                return;
             }
         }
         if (Buyer == CostState.Player && !IsChosenItem)
@@ -371,6 +372,14 @@ public class BuddyBidding : MonoBehaviour {
 
     void Detonate ()
     {
+        if (TwitchPlaysActive || ZenModeActive)
+        {
+            if (TwitchPlaysActive)
+                Solve("Detonation prevented due to Twitch Plays being enabled!");
+            else if (ZenModeActive)
+                Solve("Detonation prevented due to Zen Mode being used!");
+            return;
+        }
         var bomb = GetComponentInParent<Bomb>();
         if (bomb && !bomb.HasDetonated)
         {
@@ -398,6 +407,8 @@ public class BuddyBidding : MonoBehaviour {
 
 #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Use !{0} #/d/e/</>/c to press a number button/delete button/enter button/left button/right button/flip the credit card. This can be chained like !{0} 123e. Use !{0} Bid X ### to bid on item number X with ### coins (Buddy is item number 1). Use !{0} Cycle to cycle through the items up for auction.";
+    private bool TwitchPlaysActive;
+    private bool ZenModeActive;
 #pragma warning restore 414
 
     // Twitch Plays (TP) documentation: https://github.com/samfundev/KtaneTwitchPlays/wiki/External-Mod-Module-Support
@@ -481,6 +492,7 @@ public class BuddyBidding : MonoBehaviour {
     {
 #pragma warning restore IDE0051
         ModuleSolved = true;
-        yield return null;
+        StopAllCoroutines();
+        yield return true;
     }
 }
