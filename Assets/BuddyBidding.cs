@@ -68,6 +68,7 @@ public class BuddyBidding : MonoBehaviour {
         //Module.OnActivate += Activate;
         TodaysBuddy = (Buddy)Rnd.Range(0, Buddies.Count);
         biddingPad.SetDisplay(Buddies[(int)TodaysBuddy]);
+        creditCard.GenerateNewCard();
         creditCard.Log += Log;
         foreach(KMSelectable child in GetComponent<KMSelectable>().Children)
         {

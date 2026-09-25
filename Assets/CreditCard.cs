@@ -30,15 +30,12 @@ public class CreditCard : MonoBehaviour {
         Module.Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.PageTurn, gameObject.transform);
         return false;
     }
-
-	// Use this for initialization
-	void Start () {
-
-    }
-
-    void Awake()
+    public void Start()
     {
         transform.GetComponent<KMSelectable>().OnInteract += Flip;
+    }
+
+	public void GenerateNewCard () {
         CreditCardNumber = (long)UnityEngine.Random.Range((long)0, 10000000000000000);
         CVVNumber = (int)UnityEngine.Random.Range(100, 401);
         Company = (Company)UnityEngine.Random.Range(0, 3);
@@ -49,9 +46,4 @@ public class CreditCard : MonoBehaviour {
         Module.Log($"CVV: {CVVNumber}");
         Module.Log($"Company: {Company}");
     }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }
